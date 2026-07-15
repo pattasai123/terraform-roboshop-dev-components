@@ -6,10 +6,10 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = [local.sg_id]
 
   tags = merge(
-    var.catalogue_tags,
+    var.tags,
     local.common_tags,
     {
-      Name = "${local.common_name}-${components}"
+      Name = "${local.common_name}-${local.component}"
     }
   )
 }
