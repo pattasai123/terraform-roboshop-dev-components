@@ -33,11 +33,11 @@ resource "terraform_data" "main" {
     
     inline = [
       "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh ${local.component} var.env"
+      "sudo sh /tmp/bootstrap.sh ${local.component} ${var.env}"
     ]
   }
 }
-
+/*
 resource "aws_route53_record" "route53" {
   zone_id = data.aws_route53_zone.zone.zone_id
   name    = "${local.component}-${var.env}.${var.domain_name}"
@@ -46,7 +46,7 @@ resource "aws_route53_record" "route53" {
   records = [aws_instance.main.private_ip]
   allow_overwrite = true
 }
-
+*/
 resource "aws_ec2_instance_state" "main" {
   instance_id = aws_instance.main.id
   state       = "stopped" # Valid values: running, stopped
