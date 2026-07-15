@@ -7,11 +7,11 @@ locals {
     ]
     frontend_listener_arn    = data.aws_ssm_parameter.frontend_listener_arn.value
     backend_listener_arn    = data.aws_ssm_parameter.backend_listener_arn.value
-    listener = var.component == "frontend" ? local.frontend_listener_arn : local.backend_listener_arn
-    host_header = var.component == "frontend" ? "${var.project}.${var.env}.${var.domain_name}" :"${var.component}.backend-alb-${var.env}.${var.domain_name}" 
-    port = var.components == "frontend" ? 80 : 8080
-    path= var.components == "frontend" ? "/" : "/health"
-    component=var.components
+    listener = "${var.components}" == "frontend" ? local.frontend_listener_arn : local.backend_listener_arn
+    host_header = "${var.components}" == "frontend" ? "${var.project}.${var.env}.${var.domain_name}" :"${var.components}.backend-alb-${var.env}.${var.domain_name}" 
+    port = "${var.components}" == "frontend" ? 80 : 8080
+    path= "${var.components}" == "frontend" ? "/" : "/health"
+    component="${var.components}"
   common_name = "${var.project}-${var.env}"
   common_tags = {
     project   = var.project
