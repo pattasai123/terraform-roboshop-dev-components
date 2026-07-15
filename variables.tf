@@ -1,5 +1,5 @@
 variable "instance_type"{
-    type=String
+    type=string
 }
 
 variable "tags"{
@@ -8,17 +8,17 @@ variable "tags"{
 }
 
 variable "project"{
-    ttype=String
+    ttype=string
 }
 
 variable "env"{
-    type=String
+    type=string
 }
 
 variable "domain_name"{
-    type=String
+    type=string
 }
 
 variable "components"{
-    type=String
+    type=string
 }
