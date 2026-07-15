@@ -40,7 +40,7 @@ resource "terraform_data" "main" {
 
 resource "aws_route53_record" "route53" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "${var.instance}-${var.env}.${var.domain_name}"
+  name    = "${local.component}-${var.env}.${var.domain_name}"
   type    = "A"
   ttl     = 1
   records = [aws_instance.main.private_ip]
@@ -54,13 +54,13 @@ resource "aws_ec2_instance_state" "main" {
 }
 
 resource "aws_ami_from_instance" "main" {
-  name               = "terraform-${components}"
+  name               = "terraform-${local.component}"
   source_instance_id = aws_instance.main.id
   depends_on = [aws_ec2_instance_state.main]
 }
 
 resource "aws_lb_target_group" "main" {
-  name     = "${local.common_name}-${components}-lb-tg"
+  name     = "${local.common_name}-${local.component}-lb-tg"
   port     = local.port
   protocol = "HTTP"
   vpc_id   = data.aws_ssm_parameter.vpc_id.value
