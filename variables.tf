@@ -8,7 +8,7 @@ variable "tags"{
 }
 
 variable "project"{
-    ttype=string
+    type=string
 }
 
 variable "env"{
