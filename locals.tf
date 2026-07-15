@@ -1,6 +1,6 @@
 locals {
   ami              = data.aws_ami.joindevops.id
-  sg_id    = data.aws_ssm_parameter.${components}_sg_id.value
+  sg_id    = data.aws_ssm_parameter.${var.components}_sg_id.value
    subnet=[
     data.aws_ssm_parameter.private_subnet_a.value,
     data.aws_ssm_parameter.private_subnet_b.value

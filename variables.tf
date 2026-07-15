@@ -1,24 +1,24 @@
 variable "instance_type"{
-    type=String
+    type="String"
 }
 
 variable "tags"{
-    type=map(string)
+    type="map(string)"
     default={}
 }
 
 variable "project"{
-    type=String
+    type="String"
 }
 
 variable "env"{
-    type=String
+    type="String"
 }
 
 variable "domain_name"{
-    type=String
+    type="String"
 }
 
 variable "components"{
-    type=String
+    type="String"
 }
