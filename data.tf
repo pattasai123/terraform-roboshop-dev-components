@@ -12,7 +12,7 @@ data "aws_ssm_parameter" "private_subnet_b" {
 }
 
 data "aws_ssm_parameter" "sg_id" {
-  name = "/${var.project}/${var.env}/${components}_sg_id"
+  name = "/${var.project}/${var.env}/${var.components}_sg_id"
 }
 
 data "aws_ssm_parameter" "vpc_id" {
