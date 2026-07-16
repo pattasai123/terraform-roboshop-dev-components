@@ -13,6 +13,7 @@ locals {
     path= "${var.components}" == "frontend" ? "/" : "/health"
     component="${var.components}"
   common_name = "${var.project}-${var.env}"
+  priority="${var.priority}"
   common_tags = {
     project   = var.project
     env       = var.env
