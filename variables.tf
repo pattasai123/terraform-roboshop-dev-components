@@ -20,9 +20,9 @@ variable "domain_name"{
 }
 
 variable "components"{
-    type=string
+    
 }
 
 variable "priority"{
-    type=number
+    
 }
