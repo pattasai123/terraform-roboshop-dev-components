@@ -9,7 +9,7 @@ resource "aws_instance" "main" {
     var.tags,
     local.common_tags,
     {
-      Name = "${local.common_name}-${local.component}"
+      Name = "${local.common_name}-${var.components}"
     }
   )
 }
@@ -33,14 +33,14 @@ resource "terraform_data" "main" {
     
     inline = [
       "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh ${local.component} ${var.env}"
+      "sudo sh /tmp/bootstrap.sh ${var.components} ${var.env}"
     ]
   }
 }
 /*
 resource "aws_route53_record" "route53" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "${local.component}-${var.env}.${var.domain_name}"
+  name    = "${var.components}-${var.env}.${var.domain_name}"
   type    = "A"
   ttl     = 1
   records = [aws_instance.main.private_ip]
@@ -54,13 +54,13 @@ resource "aws_ec2_instance_state" "main" {
 }
 
 resource "aws_ami_from_instance" "main" {
-  name               = "terraform-${local.component}"
+  name               = "terraform-${var.components}"
   source_instance_id = aws_instance.main.id
   depends_on = [aws_ec2_instance_state.main]
 }
 
 resource "aws_lb_target_group" "main" {
-  name     = "${local.common_name}-${local.component}-lb-tg"
+  name     = "${local.common_name}-${var.components}-lb-tg"
   port     = local.port
   protocol = "HTTP"
   vpc_id   = data.aws_ssm_parameter.vpc_id.value
@@ -79,7 +79,7 @@ resource "aws_lb_target_group" "main" {
 }
 
 resource "aws_launch_template" "main" {
-  name      = "${local.common_name}-${local.component}-launch-template"
+  name      = "${local.common_name}-${var.components}-launch-template"
   image_id  = aws_ami_from_instance.main.id
   instance_type = "t3.micro"
 
@@ -93,7 +93,7 @@ resource "aws_launch_template" "main" {
     tags = merge(
       local.common_tags,
       {
-        Name = "${local.common_name}-${local.component}"
+        Name = "${local.common_name}-${var.components}"
       }
     )
   }
@@ -104,7 +104,7 @@ resource "aws_launch_template" "main" {
     tags = merge(
       local.common_tags,
       {
-        Name = "${local.common_name}-${local.component}"
+        Name = "${local.common_name}-${var.components}"
       }
     )
   }
@@ -112,7 +112,7 @@ resource "aws_launch_template" "main" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.common_name}-${local.component}"
+      Name = "${local.common_name}-${var.components}"
     }
   )
 
@@ -133,7 +133,7 @@ resource "aws_autoscaling_group" "main" {
 }
 
 resource "aws_autoscaling_policy" "main" {
-  name                   = "${local.common_name}-${local.component}-autoscaling-policy"
+  name                   = "${local.common_name}-${var.components}-autoscaling-policy"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 100
@@ -143,7 +143,7 @@ resource "aws_autoscaling_policy" "main" {
 
 resource "aws_lb_listener_rule" "main" {
   listener_arn = local.listener
-  priority     = local.priority
+  priority     = var.priority
 
   action {
     type             = "forward"
