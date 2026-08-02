@@ -120,16 +120,22 @@ resource "aws_launch_template" "main" {
 }
 
 resource "aws_autoscaling_group" "main" {
+
   vpc_zone_identifier = local.subnet
-  desired_capacity   = 1
-  max_size           = 3
-  min_size           = 1
+
+  desired_capacity = 1
+  max_size         = 3
+  min_size         = 1
 
   launch_template {
     id      = aws_launch_template.main.id
-    version = "$Latest"
+    version = aws_launch_template.main.latest_version
   }
-  depends_on = [aws_launch_template.main]
+
+  target_group_arns = [aws_lb_target_group.main.arn]
+
+  health_check_type         = "ELB"
+  health_check_grace_period = 100
 }
 
 resource "aws_autoscaling_policy" "main" {
