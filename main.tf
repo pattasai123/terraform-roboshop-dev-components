@@ -71,7 +71,7 @@ resource "aws_lb_target_group" "main" {
     interval = 10
     matcher = "200-299"
     path = local.path
-    port = 8080
+    port = local.port
     protocol = "HTTP"
     unhealthy_threshold = 2
   }
